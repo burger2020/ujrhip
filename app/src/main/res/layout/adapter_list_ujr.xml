@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical">
+    <ImageView
+            android:id="@+id/postPhoto"
+            android:layout_weight="1"
+            android:layout_margin="8dp"
+            android:background="#aaaaaa"
+            android:layout_width="match_parent" android:layout_height="0dp"/>
+    <TextView
+            android:id="@+id/postContent"
+            android:layout_margin="8dp"
+            tools:text="게시물 내용"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/postWriter"
+                android:layout_weight="1"
+                tools:text="작성자: ㅇㅇㅇ"
+                android:layout_margin="8dp"
+                android:layout_width="0dp" android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/postDate"
+                tools:text="1970.00.00"
+                android:layout_margin="8dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
