@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".View.CreateFragmentView">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="11111"/>
-
-</FrameLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              tools:context=".View.CreateFragmentView">
+    <!--액션바-->
+    <FrameLayout
+            android:layout_width="match_parent" android:layout_height="60dp">
+        <!--백버튼-->
+        <ImageView
+                android:layout_margin="8dp"
+                android:id="@+id/backBtn"
+                android:layout_width="60dp" android:layout_height="match_parent"/>
+        <!--타이틀-->
+        <TextView
+                style="@style/actionbarTitleText"
+                android:text="글 등록"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+        <!--등록 버튼-->
+        <TextView
+                android:enabled="false"
+                android:layout_margin="8dp"
+                android:layout_gravity="right|center_vertical"
+                android:id="@+id/successBtn"
+                android:text="등록"
+                android:textSize="20dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+    </FrameLayout>
+    <!--게시 사진-->
+    <ImageView
+            android:id="@+id/postPhoto"
+            android:background="#aaaaaa"
+            android:layout_margin="8dp"
+            android:layout_width="120dp" android:layout_height="120dp"/>
+    <!--게시 내용-->
+    <EditText
+            android:id="@+id/postContent"
+            android:gravity="left"
+            android:minLines="5"
+            android:maxLines="30"
+            android:hint="내용을 입력해 주세요."
+            android:layout_margin="8dp"
+            android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <!--게시물 작성자-->
+    <EditText
+            android:id="@+id/postWriter"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:hint="닉네임"
+            android:layout_width="100dp" android:layout_height="wrap_content"/>
+    <!--게시물 비밀번호-->
+    <EditText
+            android:id="@+id/postPassword"
+            android:layout_gravity="left"
+            android:layout_margin="8dp"
+            android:hint="비밀번호"
+            android:layout_width="100dp" android:layout_height="wrap_content"/>
+</LinearLayout>
