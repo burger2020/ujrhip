@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hip.ujr.ujrhip.Item.postData
@@ -14,7 +15,7 @@ import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.adapter_list_ujr.view.*
 import java.util.*
 
-class PostListAdapter(val context: Context, private val ujrItem: ArrayList<postData>): RecyclerView.Adapter<PostListAdapter.ViewHolder>(){
+class PostListAdapter(val context: Context, private val ujrItem: PaginatedList<postData>): RecyclerView.Adapter<PostListAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListAdapter.ViewHolder {
         val inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val mainView = inflater.inflate(R.layout.adapter_list_ujr,parent,false)
@@ -30,7 +31,7 @@ class PostListAdapter(val context: Context, private val ujrItem: ArrayList<postD
         private val write = view.postWriter
         private val date = view.postDate
         @SuppressLint("SetTextI18n")
-        fun onBind(context: Context, ujrItem: ArrayList<postData>, position: Int){
+        fun onBind(context: Context, ujrItem: PaginatedList<postData>, position: Int){
             //사진
 //            Glide.with(context)
 //                .load(R.drawable.test_img)

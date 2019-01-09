@@ -11,7 +11,11 @@ data class postData(@get:DynamoDBHashKey var userId: String? = null,
               @get:DynamoDBAttribute var password: String? = null,
               @get:DynamoDBAttribute var photoUrl: String? = null,
               @get:DynamoDBAttribute var content: String? = null){
-    fun a(){
-
+    fun setData(userId: String?,date: Long?,password: String?,photoUrl: String?,content: String?){
+        this.userId = userId
+        this.date = date
+        this.password = password
+        this.photoUrl = photoUrl
+        this.content = content
     }
 }

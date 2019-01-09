@@ -16,4 +16,10 @@
     <string name="profileDialogText">사진 추가</string>
     <string name="profileDialogText1">사진 찍기</string>
     <string name="profileDialogText2">갤러리에서 선택</string>
+    <string name="title_activity_main2_view">Main2View</string>
+    <string name="tab_text_1">ㅇㅇㅇ</string>
+    <string name="tab_text_2">게시물</string>
+    <string name="tab_text_3">홈</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
