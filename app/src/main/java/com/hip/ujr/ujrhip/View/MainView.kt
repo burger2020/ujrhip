@@ -6,12 +6,16 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.Toast
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserStateDetails
+import com.amazonaws.mobile.client.results.SignInResult
+import com.amazonaws.mobile.client.results.SignInState
 import com.amazonaws.mobileconnectors.appsync.AWSAppSyncClient
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService
 import com.hip.ujr.ujrhip.Contractor.MainContractor
+import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -52,11 +56,15 @@ class MainView : AppCompatActivity(), MainContractor.View {
         AWSMobileClient.getInstance().initialize(applicationContext, object : Callback<UserStateDetails> {
             override fun onResult(userStateDetails: UserStateDetails) {
                 Log.i("MainView", "AWSMobileClient initialized. User State is " + userStateDetails.userState)
+//                AWSMobileClient.getInstance().signOut()
+
             }
             override fun onError(e: Exception) {
                 Log.e("MainView", "Initialization error.", e)
             }
         })
+
+        AWSDB.init()
 //        AWSS3.uploadWithTransferUtility(applicationContext,"","")
     }
 
@@ -68,10 +76,12 @@ class MainView : AppCompatActivity(), MainContractor.View {
         navigation.enableShiftingMode(false)
         navigation.enableAnimation(false)
         navigation.setTextVisibility(false)
-
     }
     private fun setView() {
         //바탐네비 아이템 선텍 리스너
         navigation.onNavigationItemSelectedListener = mOnNavigationItemSelectedListener
+    }
+    private fun makeToast(s: String){
+        Toast.makeText(applicationContext,s,Toast.LENGTH_SHORT).show()
     }
 }

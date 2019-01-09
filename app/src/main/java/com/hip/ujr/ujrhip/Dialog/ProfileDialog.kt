@@ -47,6 +47,10 @@ class ProfileDialog(context: Context, private val count: Int) : BaseAdapter() {
                 viewHolder.textView.text = context.getString(R.string.profileDialogText2)
                 viewHolder.view.visibility = View.GONE
             }
+            3 -> {
+                viewHolder.textView.text = "db update"
+                viewHolder.view.visibility = View.GONE
+            }
         }
 
         return view

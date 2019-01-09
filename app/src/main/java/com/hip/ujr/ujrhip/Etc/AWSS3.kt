@@ -2,6 +2,7 @@
 
 package com.hip.ujr.ujrhip.Etc
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.amazonaws.mobile.client.AWSMobileClient
@@ -15,9 +16,15 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient
 import com.amazonaws.services.s3.AmazonS3Client
 import java.io.File
 
+@SuppressLint("StaticFieldLeak")
 object AWSS3 {
+    var context: Context? = null
+
+    fun init(context: Context){
+        this.context = context
+    }
     //업로드
-    fun uploadWithTransferUtility(context: Context, key: String, filePath: String) {
+    fun uploadWithTransferUtility(key: String, filePath: String) {
         val options = TransferUtilityOptions()
         //스레드 수
         options.transferThreadPoolSize = 8
@@ -65,7 +72,7 @@ object AWSS3 {
         Log.d("YourActivity", "Bytes Transferred: " + uploadObserver.bytesTransferred)
         Log.d("YourActivity", "Bytes Total: " + uploadObserver.bytesTotal)
     }
-    fun downloadWithTransferUtility(context: Context, path: String) {
+    fun downloadWithTransferUtility(path: String) {
 
         val transferUtility = TransferUtility.builder()
             .context(context)
