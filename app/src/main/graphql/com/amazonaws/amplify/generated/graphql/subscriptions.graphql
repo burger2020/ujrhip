@@ -1,0 +1,79 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateNote {
+  onCreateNote {
+    id
+    title
+    content
+    name
+  }
+}
+subscription OnUpdateNote {
+  onUpdateNote {
+    id
+    title
+    content
+    name
+  }
+}
+subscription OnDeleteNote {
+  onDeleteNote {
+    id
+    title
+    content
+    name
+  }
+}
+subscription OnCreateMyCustomType(
+  $id: ID
+  $title: String
+  $content: String
+  $price: Int
+) {
+  onCreateMyCustomType(
+    id: $id
+    title: $title
+    content: $content
+    price: $price
+  ) {
+    id
+    title
+    content
+    price
+  }
+}
+subscription OnUpdateMyCustomType(
+  $id: ID
+  $title: String
+  $content: String
+  $price: Int
+) {
+  onUpdateMyCustomType(
+    id: $id
+    title: $title
+    content: $content
+    price: $price
+  ) {
+    id
+    title
+    content
+    price
+  }
+}
+subscription OnDeleteMyCustomType(
+  $id: ID
+  $title: String
+  $content: String
+  $price: Int
+) {
+  onDeleteMyCustomType(
+    id: $id
+    title: $title
+    content: $content
+    price: $price
+  ) {
+    id
+    title
+    content
+    price
+  }
+}

@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "ujrhip",
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authcognito16137c07",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "schemaGraphql": "s3://ujrhip-20190103152613-deployment/amplify-appsync-files/schema.graphql.1546496914225",
+    "ResolverBucket": "ujrhip-20190103152613-deployment",
+    "ResolverRootKey": "amplify-appsync-files",
+    "DeploymentTimestamp": "1546496914225"
+}

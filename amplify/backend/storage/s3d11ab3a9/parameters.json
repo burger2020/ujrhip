@@ -1,0 +1,9 @@
+{
+    "bucketName": "ujrhip727dc1caafc14cabbd4f1379cb5fc041",
+    "authPolicyName": "s3_amplify_d11ab3a9",
+    "unauthPolicyName": "s3_amplify_d11ab3a9",
+    "authRoleName": "ujrhip-20190103152613-authRole",
+    "unauthRoleName": "ujrhip-20190103152613-unauthRole",
+    "authPermissions": "rw",
+    "unauthPermissions": "rw"
+}
