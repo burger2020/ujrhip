@@ -2,7 +2,9 @@ package com.hip.ujr.ujrhip.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.constraint.ConstraintLayout
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,7 @@ import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.adapter_list_ujr.view.*
 import java.util.*
 
-class PostListAdapter(val context: Context, private val ujrItem: PaginatedList<postData>): RecyclerView.Adapter<PostListAdapter.ViewHolder>(){
+class PostListAdapter(val context: Context, private val ujrItem: List<postData>): RecyclerView.Adapter<PostListAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostListAdapter.ViewHolder {
         val inflater : LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val mainView = inflater.inflate(R.layout.adapter_list_ujr,parent,false)
@@ -31,17 +33,15 @@ class PostListAdapter(val context: Context, private val ujrItem: PaginatedList<p
         private val write = view.postWriter
         private val date = view.postDate
         @SuppressLint("SetTextI18n")
-        fun onBind(context: Context, ujrItem: PaginatedList<postData>, position: Int){
-            //사진
-//            Glide.with(context)
-//                .load(R.drawable.test_img)
-//                .apply(RequestOptions().centerCrop())
-//                .into(photo)
-            photo.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-            Glide.with(context)
-                .load("https://s3-ap-northeast-1.amazonaws.com/ujrhipa71b47235b024d62acb16e6fab62bfad/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+2018-12-29+%EC%98%A4%ED%9B%84+5.16.49.png")
-                .apply(RequestOptions().centerInside())
-                .into(photo)
+        fun onBind(context: Context, ujrItem: List<postData>, position: Int){
+            val path = "https://s3-ap-northeast-1.amazonaws.com/ujrhip727dc1caafc14cabbd4f1379cb5fc041/${ujrItem[position].imageUrl}"
+            //등록 사진
+            if(ujrItem[position].imageUrl != "nonUrl")
+                Glide.with(context)
+                    .load(path)
+                    .apply(RequestOptions().centerInside())
+                    .into(photo)
+//            photo.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             //내용
             content.text = ujrItem[position].content
             //작성자

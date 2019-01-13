@@ -15,7 +15,8 @@ interface CreateContractor {
     }
     interface Model{
         fun setPresenter(presenter: Presenter)
-        fun setData(userId: String?, date: Long?, password: String?, photoUrl: String?, content: String?)
         fun savePhoto(photoUrl: String, path: String)
+        fun emptyPhoto()
+        fun setData(userId: String?, date: Long?, password: String?, photoUrl: String?, content: String?)
     }
 }

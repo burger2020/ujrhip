@@ -25,6 +25,7 @@ object AWSS3 {
     }
     //업로드
     fun uploadWithTransferUtility(key: String, filePath: String) {
+        Log.d("saveImage!!!!","$key, $filePath")
         val options = TransferUtilityOptions()
         //스레드 수
         options.transferThreadPoolSize = 8
@@ -48,7 +49,7 @@ object AWSS3 {
             override fun onStateChanged(id: Int, state: TransferState) {
                 if (TransferState.COMPLETED === state) {
                     // 업로드 완료
-
+                    Log.d("saveImage!!!!","completed")
                 }
             }
             override fun onProgressChanged(id: Int, bytesCurrent: Long, bytesTotal: Long) {
@@ -61,12 +62,15 @@ object AWSS3 {
             }
             override fun onError(id: Int, ex: Exception) {
                 // 에러
+
+                Log.d("saveImage!!!!","error $ex")
             }
         })
 
         // 데이터를 폴링하려면 앨리스터를 부착하는 대신 관찰자의 상태 및 진행 상태를 확인하십시오.
         if (TransferState.COMPLETED === uploadObserver.state) {
             // 업로드 완료
+            Log.d("saveImage!!!!","completed2")
         }
 
         Log.d("YourActivity", "Bytes Transferred: " + uploadObserver.bytesTransferred)
@@ -83,9 +87,6 @@ object AWSS3 {
         transferUtility.download(
             "public/s3Key.txt",
             File(path))
-
-
-        //TODO DynamoDB 사용법
 
         // Attach a listener to the observer to get state update and progress notifications
         downloadObserver.setTransferListener(object : TransferListener {

@@ -57,10 +57,11 @@
                android:layout_margin="16dp"
                android:id="@+id/photoImg"/>
     <!--게시물 내용-->
-    <EditText android:layout_width="wrap_content" android:layout_height="100dp"
+    <EditText android:layout_width="0dp" android:layout_height="100dp"
               app:layout_constraintTop_toBottomOf="@id/appbar"
               app:layout_constraintLeft_toRightOf="@id/photoImg"
               app:layout_constraintHorizontal_weight="1"
+              app:layout_constraintVertical_weight="1"
               app:layout_constrainedHeight="true"
               android:gravity="top"
               android:hint="내용 입력"
@@ -79,6 +80,7 @@
               app:layout_constraintLeft_toLeftOf="parent"
               android:layout_margin="16dp"
               android:hint="닉네임"
+              android:inputType="text"
               android:background="@color/white"
               android:id="@+id/userIdTxt"/>
     <!--분리선-->
@@ -93,6 +95,7 @@
               app:layout_constraintLeft_toLeftOf="parent"
               android:layout_margin="16dp"
               android:hint="비밀번호"
+              android:inputType="textPassword"
               android:background="@color/white"
               android:id="@+id/postPasswordTxt"/>
     <!--분리선-->

@@ -17,6 +17,10 @@ class CreateModel : CreateContractor.Model {
     }
     //사진 저장
     override fun savePhoto(photoUrl: String, path: String) {
-        AWSS3.uploadWithTransferUtility(photoUrl, path)
+        AWSS3.uploadWithTransferUtility(System.currentTimeMillis().toString(), path)
+    }
+    //사진 등록 없을 시
+    override fun emptyPhoto() {
+        data.imageUrl = "empty"
     }
 }

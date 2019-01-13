@@ -1,89 +1,90 @@
 {
-	"providers": {
-		"awscloudformation": {
-			"AuthRoleName": "ujrhip-20190103152613-authRole",
-			"UnauthRoleArn": "arn:aws:iam::455460359853:role/ujrhip-20190103152613-unauthRole",
-			"AuthRoleArn": "arn:aws:iam::455460359853:role/ujrhip-20190103152613-authRole",
-			"Region": "ap-northeast-1",
-			"DeploymentBucketName": "ujrhip-20190103152613-deployment",
-			"UnauthRoleName": "ujrhip-20190103152613-unauthRole",
-			"StackName": "ujrhip-20190103152613",
-			"StackId": "arn:aws:cloudformation:ap-northeast-1:455460359853:stack/ujrhip-20190103152613/78998d50-0f20-11e9-8654-0e842c318628"
-		}
-	},
-	"auth": {
-		"cognito16137c07": {
-			"service": "Cognito",
-			"providerPlugin": "awscloudformation",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/auth/cognito16137c07-cloudformation-template.yml",
-				"logicalId": "authcognito16137c07"
-			},
-			"lastPushTimeStamp": "2019-01-03T06:45:09.185Z",
-			"output": {
-				"AppClientSecret": "la0migrkgrmsb5mbbso7fjkajs4luphgg9am236m7in8co1q1bp",
-				"UserPoolId": "ap-northeast-1_H9Slzyol6",
-				"AppClientIDWeb": "68f541cc1lp2ko6gehv6ve5j3q",
-				"AppClientID": "58s4q0tl9q9sv2ntqo6k67e918",
-				"IdentityPoolId": "ap-northeast-1:b3b2cf21-0995-41f2-9df6-2a852be8f179",
-				"IdentityPoolName": "cognito16137c07_identitypool_16137c07",
-				"UserPoolName": "cognito16137c07_userpool_16137c07"
-			},
-			"lastPushDirHash": "g1Qe50h96YK+hD74M8VhSPhklT0="
-		}
-	},
-	"api": {
-		"ujrhip": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"securityType": "AMAZON_COGNITO_USER_POOLS",
-				"GraphQLAPIIdOutput": "blotq2dqonblhkka3utlutjsy4",
-				"GraphQLAPIEndpointOutput": "https://4d5dggw4w5gpdbsfjts5oeirqq.appsync-api.ap-northeast-1.amazonaws.com/graphql",
-				"GraphQLAPIKeyOutput": "da2-unu73vv6pfflpnzyqe2zgv53ge",
-				"AuthCognitoUserPoolIdOutput": "ap-northeast-1_H9Slzyol6",
-				"AuthCognitoUserPoolNativeClientId": "See UserPool: ap-northeast-1_H9Slzyol6",
-				"AuthCognitoUserPoolJSClientId": "See UserPool: ap-northeast-1_H9Slzyol6"
-			},
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-				"logicalId": "apiujrhip"
-			},
-			"lastPushTimeStamp": "2019-01-03T06:45:09.186Z",
-			"lastPushDirHash": "g696rRIvJJxUdyohwRuVsW8cd1c="
-		}
-	},
-	"storage": {
-		"s3d11ab3a9": {
-			"service": "S3",
-			"providerPlugin": "awscloudformation",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
-				"logicalId": "storages3d11ab3a9"
-			},
-			"lastPushTimeStamp": "2019-01-03T06:45:09.188Z",
-			"output": {
-				"BucketName": "ujrhip727dc1caafc14cabbd4f1379cb5fc041",
-				"Region": "ap-northeast-1"
-			},
-			"lastPushDirHash": "bkwphpHcDZhaEX7Gm3BMHytYTX0="
-		},
-		"dynamob1e6dcfe": {
-			"service": "DynamoDB",
-			"providerPlugin": "awscloudformation",
-			"providerMetadata": {
-				"s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/storage/dynamob1e6dcfe-cloudformation-template.json",
-				"logicalId": "storagedynamob1e6dcfe"
-			},
-			"lastPushTimeStamp": "2019-01-03T06:45:09.190Z",
-			"output": {
-				"PartitionKeyName": "userId",
-				"Region": "ap-northeast-1",
-				"Arn": "arn:aws:dynamodb:ap-northeast-1:455460359853:table/post",
-				"PartitionKeyType": "S",
-				"Name": "post"
-			},
-			"lastPushDirHash": "icxFTd2RkuvfjQH8L9IO013RAtI="
-		}
-	}
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "ujrhip-20190103152613-authRole",
+            "UnauthRoleArn": "arn:aws:iam::455460359853:role/ujrhip-20190103152613-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::455460359853:role/ujrhip-20190103152613-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "ujrhip-20190103152613-deployment",
+            "UnauthRoleName": "ujrhip-20190103152613-unauthRole",
+            "StackName": "ujrhip-20190103152613",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:455460359853:stack/ujrhip-20190103152613/78998d50-0f20-11e9-8654-0e842c318628"
+        }
+    },
+    "auth": {
+        "cognito16137c07": {
+            "service": "Cognito",
+            "providerPlugin": "awscloudformation",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/auth/cognito16137c07-cloudformation-template.yml",
+                "logicalId": "authcognito16137c07"
+            },
+            "lastPushTimeStamp": "2019-01-10T02:35:31.502Z",
+            "output": {
+                "AppClientSecret": "la0migrkgrmsb5mbbso7fjkajs4luphgg9am236m7in8co1q1bp",
+                "UserPoolId": "ap-northeast-1_H9Slzyol6",
+                "AppClientIDWeb": "68f541cc1lp2ko6gehv6ve5j3q",
+                "AppClientID": "58s4q0tl9q9sv2ntqo6k67e918",
+                "IdentityPoolId": "ap-northeast-1:b3b2cf21-0995-41f2-9df6-2a852be8f179",
+                "IdentityPoolName": "cognito16137c07_identitypool_16137c07",
+                "UserPoolName": "cognito16137c07_userpool_16137c07"
+            },
+            "lastPushDirHash": "g1Qe50h96YK+hD74M8VhSPhklT0=",
+            "[object Object]": {}
+        }
+    },
+    "api": {
+        "ujrhip": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "securityType": "AMAZON_COGNITO_USER_POOLS",
+                "GraphQLAPIIdOutput": "blotq2dqonblhkka3utlutjsy4",
+                "GraphQLAPIEndpointOutput": "https://4d5dggw4w5gpdbsfjts5oeirqq.appsync-api.ap-northeast-1.amazonaws.com/graphql",
+                "GraphQLAPIKeyOutput": "da2-unu73vv6pfflpnzyqe2zgv53ge",
+                "AuthCognitoUserPoolIdOutput": "ap-northeast-1_H9Slzyol6",
+                "AuthCognitoUserPoolNativeClientId": "See UserPool: ap-northeast-1_H9Slzyol6",
+                "AuthCognitoUserPoolJSClientId": "See UserPool: ap-northeast-1_H9Slzyol6"
+            },
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+                "logicalId": "apiujrhip"
+            },
+            "lastPushTimeStamp": "2019-01-03T06:45:09.186Z",
+            "lastPushDirHash": "g696rRIvJJxUdyohwRuVsW8cd1c="
+        }
+    },
+    "storage": {
+        "s3d11ab3a9": {
+            "service": "S3",
+            "providerPlugin": "awscloudformation",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
+                "logicalId": "storages3d11ab3a9"
+            },
+            "lastPushTimeStamp": "2019-01-03T06:45:09.188Z",
+            "output": {
+                "BucketName": "ujrhip727dc1caafc14cabbd4f1379cb5fc041",
+                "Region": "ap-northeast-1"
+            },
+            "lastPushDirHash": "bkwphpHcDZhaEX7Gm3BMHytYTX0="
+        },
+        "dynamob1e6dcfe": {
+            "service": "DynamoDB",
+            "providerPlugin": "awscloudformation",
+            "providerMetadata": {
+                "s3TemplateURL": "https://s3.amazonaws.com/ujrhip-20190103152613-deployment/amplify-cfn-templates/storage/dynamob1e6dcfe-cloudformation-template.json",
+                "logicalId": "storagedynamob1e6dcfe"
+            },
+            "lastPushTimeStamp": "2019-01-03T06:45:09.190Z",
+            "output": {
+                "PartitionKeyName": "userId",
+                "Region": "ap-northeast-1",
+                "Arn": "arn:aws:dynamodb:ap-northeast-1:455460359853:table/post",
+                "PartitionKeyType": "S",
+                "Name": "post"
+            },
+            "lastPushDirHash": "icxFTd2RkuvfjQH8L9IO013RAtI="
+        }
+    }
 }

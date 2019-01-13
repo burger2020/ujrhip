@@ -1,30 +1,23 @@
 package com.hip.ujr.ujrhip.View
 
 import android.content.Intent
+import android.os.Bundle
 import android.support.design.widget.TabLayout
-import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
-
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
-import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService
 import com.hip.ujr.ujrhip.Etc.AWSDB
-
 import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.activity_main2_view.*
 import kotlinx.android.synthetic.main.fragment_main2_view.view.*
+
 
 class Main2View : AppCompatActivity() {
 
@@ -60,20 +53,14 @@ class Main2View : AppCompatActivity() {
                 1->{
                     ListFragmentView.newInstance()
                 }
-                2->{
-                    HomeFragmentView.newInstance()
-                }
                 else->{
-                    PlaceholderFragment.newInstance(position + 1)
+                    HomeFragmentView.newInstance()
                 }
             }
         }
-
-        override fun getCount(): Int {
-            return 3
-        }
+        //화면 개수
+        override fun getCount(): Int = 3
     }
-
     //초기화
     private fun initialize() {
         //액션바 연결
@@ -87,7 +74,6 @@ class Main2View : AppCompatActivity() {
             override fun onResult(userStateDetails: UserStateDetails) {
                 Log.i("MainView", "AWSMobileClient initialized. User State is " + userStateDetails.userState)
 //                AWSMobileClient.getInstance().signOut()
-
             }
             override fun onError(e: Exception) {
                 Log.e("MainView", "Initialization error.", e)
@@ -106,6 +92,7 @@ class Main2View : AppCompatActivity() {
         //뷰페이저 어뎁터 연결
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        container.currentItem = 1
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
     }
     //

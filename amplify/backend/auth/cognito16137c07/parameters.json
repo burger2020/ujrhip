@@ -47,7 +47,7 @@
     "userpoolClientLogPolicy": "cognito16137c07_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognito16137c07_userpoolclient_lambda_iam_policy",
     "userpoolClientSetAttributes": false,
-    "useDefault": "default",
+    "useDefault": "manual",
     "unAuthRoleName": "ujrhip-20190103152613-unauthRole",
     "authRoleName": "ujrhip-20190103152613-authRole",
     "unAuthRoleArn": "arn:aws:iam::455460359853:role/ujrhip-20190103152613-unauthRole",

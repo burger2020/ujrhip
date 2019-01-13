@@ -33,9 +33,9 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     private val REQUEST_IMAGE_CAPTURE = 10942
 //    private var dbTable : Table? = null
     var content = ""
-    var writer = ""
+    var userId = ""
     var password = ""
-    var photoUrl = "nonUrl"
+    private var photoUrl = "nonUrl"
     var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +62,22 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
             }.create()
         dialog.show()
     }
+    //게시물 등록
+    private fun pushData() {
+        val c = Calendar.getInstance()
+        photoUrl = System.currentTimeMillis().toString()
+        model.setData(userId,c.timeInMillis,password,photoUrl,content)
+
+        if(path != "")
+            model.savePhoto(photoUrl, path)
+        else
+            model.emptyPhoto()
+        thread(start = true) {
+            AWSDB.createTable(model.data)
+        }
+        Toast.makeText(applicationContext,"등록완료",Toast.LENGTH_SHORT).show()
+    }
+
     //사진 선택 옵션
     private fun profileImageSetting(sect: Int) {
         when (sect) {
@@ -74,41 +90,47 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Config.RC_PICK_IMAGES && resultCode == AppCompatActivity.RESULT_OK && data != null) { //갤러리에서 사진선택
-            val images = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)[0].path
+        //갤러리에서 사진선택
+        if (requestCode == Config.RC_PICK_IMAGES && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            path = data.getParcelableArrayListExtra<Image>(Config.EXTRA_IMAGES)[0].path
             //gif아닌지 확인
-            if(images[images.length-1]!='f'){
-                path = images
-                Glide.with(this)
-                    .load(path)
-                    .apply(RequestOptions().centerCrop())
-                    .into(photoImg)
-            }
-            else{ Toast.makeText(applicationContext,"gif", Toast.LENGTH_SHORT).show() }
+            setImageView(path)
+//            if(images[images.length-1]!='f')
+//            else Toast.makeText(applicationContext,"gif", Toast.LENGTH_SHORT).show()
         }
+        //사진 찍기
         else if(requestCode == REQUEST_IMAGE_CAPTURE&& resultCode == AppCompatActivity.RESULT_OK){
             val extras = data!!.extras
             path = extras.get("data").toString()
+            setImageView(path)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-
+    //사진 선택시 이미지뷰 사진 적용
+    private fun setImageView(path: String){
+        Glide.with(this)
+            .load(path)
+            .apply(RequestOptions().centerCrop())
+            .into(photoImg)
+    }
+    //초기화
     private fun initialize(){
         AWSS3.init(this)
     }
+    //뷰
     private fun setView() {
         val watcher = object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 // 내용 10자, 게시자명 3자, 게시물 비밀번호 4자 이상 입력시 등록버튼 활성화
                 content = postContentTxt.text.toString()
-                writer = userIdTxt.text.toString()
+                userId = userIdTxt.text.toString()
                 password = postPasswordTxt.text.toString()
-                if(writer.length>=3 &&  password.length>=4 && content.length>=10) {
+                if(userId.length>=2 &&  password.length>=3 && content.length>=3) {
                     postPushBtn.setTextColor(resources.getColor(R.color.black))
                     postPushBtn.isEnabled = true
                 }
                 else {
-                    postPushBtn.setTextColor(resources.getColor(R.color.enable))
+                    postPushBtn.setTextColor(resources.getColor(R.color.disable))
                     postPushBtn.isEnabled = false
                 }
             }
@@ -116,21 +138,9 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
         //등록버튼 클릭 리스너
-        postPushBtn.setOnClickListener{
-            Toast.makeText(applicationContext,"등록",Toast.LENGTH_SHORT).show()
-            val c = Calendar.getInstance()
-            photoUrl = System.currentTimeMillis().toString()
-            model.setData(writer,c.timeInMillis,password,photoUrl,content)
-            model.savePhoto(photoUrl, path)
-
-            thread(start = true) {
-                AWSDB.createTable(model.data)
-            }
-        }
+        postPushBtn.setOnClickListener{ pushData() }
         //사진 선택
-        photoImg.setOnClickListener{
-            addPhoto()
-        }
+        photoImg.setOnClickListener{ addPhoto() }
         //게시글 입력 리스너
         postContentTxt.addTextChangedListener(watcher)
         //게시자 명 입력 리스너
@@ -138,6 +148,7 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
         //게시물 비밀번호 입력 리스너
         postPasswordTxt.addTextChangedListener(watcher)
     }
+    //MVP
     private fun setMVP(){
         if(mStateMaintainer.firstTimeIn()){
             val pre = CreatePresenter()
