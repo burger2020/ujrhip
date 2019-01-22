@@ -1,22 +1,25 @@
 package com.hip.ujr.ujrhip.View
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedScanList
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
 import com.hip.ujr.ujrhip.Etc.AWSDB
-import com.hip.ujr.ujrhip.Etc.AWSDBInterface
+import com.hip.ujr.ujrhip.Etc.AWSDBCallback
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
 import com.hip.ujr.ujrhip.Item.postData
 import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.view.*
 
 
-class ListFragmentView : Fragment(), AWSDBInterface {
+class ListFragmentView : Fragment(), AWSDBCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -37,14 +40,14 @@ class ListFragmentView : Fragment(), AWSDBInterface {
 
         return rootView
     }
-    private fun refreshData(){
+    fun refreshData(){
         AWSDB.getItem(this)
         rootView.refreshLayout.isRefreshing = false
     }
     //인터페이스 콜백
-    override fun loadDataCallback(a: PaginatedScanList<postData>) {
+    override fun loadDataCallback(data: PaginatedScanList<postData>) {
         ujrItem.clear()
-        ujrItem.addAll(a)
+        ujrItem.addAll(data)
         postListAdapter.notifyDataSetChanged()
     }
     //    기본 세팅 초기화
@@ -60,6 +63,20 @@ class ListFragmentView : Fragment(), AWSDBInterface {
     }
     //mvp 초기화
     private fun setMVP() {
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            CREATE_ACTIVITY->{
+                when(resultCode){
+                    //업로드 성공 후 돌아오면 게시물 초기화
+                    UPLOAD_COMPLETED->{
+                        refreshData()
+                    }
+                }
+            }
+        }
     }
 
     companion object {

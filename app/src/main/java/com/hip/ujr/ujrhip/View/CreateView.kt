@@ -3,18 +3,22 @@ package com.hip.ujr.ujrhip.View
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
+import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
-import com.hip.ujr.ujrhip.Etc.AWSDB
-import com.hip.ujr.ujrhip.Etc.AWSS3
-import com.hip.ujr.ujrhip.Etc.StateMaintainer
-import com.hip.ujr.ujrhip.Etc.Util
+import com.hip.ujr.ujrhip.Etc.*
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.COMPLETED
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.ERROR
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.INVISIBLE
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.VISIBLE
 import com.hip.ujr.ujrhip.Model.CreateModel
 import com.hip.ujr.ujrhip.Presenter.CreatePresenter
 import com.hip.ujr.ujrhip.R
@@ -25,17 +29,17 @@ import kotlinx.android.synthetic.main.activity_create_view.*
 import java.util.*
 import kotlin.concurrent.thread
 
-class CreateView : AppCompatActivity(), CreateContractor.View {
+class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
     private val mStateMaintainer = StateMaintainer(fragmentManager, CreateView::class.java.name)
     private lateinit var model: CreateModel
     private lateinit var presenter: CreatePresenter
 
     private val REQUEST_IMAGE_CAPTURE = 10942
-//    private var dbTable : Table? = null
+    //    private var dbTable : Table? = null
     var content = ""
     var userId = ""
     var password = ""
-    private var photoUrl = "nonUrl"
+    private var photoUrl = EMPTY
     var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,7 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     }
     //사진 선택 옵션 다이얼로그
     private fun addPhoto() {
+        Util.isSoftKeyView(this,postContentTxt, INVISIBLE)
         val adapter = ProfileDialog(this, 3)
         var overlapClick = true
         val dialog = DialogPlus.newDialog(this)
@@ -64,20 +69,19 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     }
     //게시물 등록
     private fun pushData() {
+        Util.isSoftKeyView(this,postContentTxt, INVISIBLE)
+        progressbarVisible(VISIBLE)
         val c = Calendar.getInstance()
         photoUrl = System.currentTimeMillis().toString()
         model.setData(userId,c.timeInMillis,password,photoUrl,content)
-
         if(path != "")
-            model.savePhoto(photoUrl, path)
+            model.savePhoto(photoUrl, path, this)
         else
             model.emptyPhoto()
         thread(start = true) {
             AWSDB.createTable(model.data)
         }
-        Toast.makeText(applicationContext,"등록완료",Toast.LENGTH_SHORT).show()
     }
-
     //사진 선택 옵션
     private fun profileImageSetting(sect: Int) {
         when (sect) {
@@ -112,6 +116,21 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
             .load(path)
             .apply(RequestOptions().centerCrop())
             .into(photoImg)
+    }
+    //이미지 로드 완료시 콜백
+    override fun imageLoadCallback(callback: Int) {
+        when(callback){
+            COMPLETED->{
+                Snackbar.make(window.decorView.rootView,"게시물이 등록되었습니다.",Snackbar.LENGTH_SHORT).show()
+                setResult(UPLOAD_COMPLETED)
+                finish()
+                progressbarVisible(INVISIBLE)
+            }
+            ERROR->{
+                Snackbar.make(window.decorView.rootView,"문제가 발생하였습니다. 다시시도해 주세요.",Snackbar.LENGTH_SHORT).show()
+                progressbarVisible(INVISIBLE)
+            }
+        }
     }
     //초기화
     private fun initialize(){
@@ -168,4 +187,14 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     }
     override fun getAppContext(): Context = applicationContext
     override fun getActivityContext(): Context = this
+    override fun progressbarVisible(visible: Int) {
+        when(visible){
+            VISIBLE->{
+                progressBar.visibility = View.VISIBLE
+            }
+            INVISIBLE->{
+                progressBar.visibility = View.GONE
+            }
+        }
+    }
 }

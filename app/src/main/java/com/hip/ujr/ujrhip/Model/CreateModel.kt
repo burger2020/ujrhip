@@ -2,6 +2,9 @@ package com.hip.ujr.ujrhip.Model
 
 import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Etc.AWSS3
+import com.hip.ujr.ujrhip.Etc.AWSS3Callback
+import com.hip.ujr.ujrhip.Etc.StringData
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
 import com.hip.ujr.ujrhip.Item.postData
 
 class CreateModel : CreateContractor.Model {
@@ -16,11 +19,11 @@ class CreateModel : CreateContractor.Model {
         data.setData(userId,date,password,photoUrl,content)
     }
     //사진 저장
-    override fun savePhoto(photoUrl: String, path: String) {
-        AWSS3.uploadWithTransferUtility(System.currentTimeMillis().toString(), path)
+    override fun savePhoto(photoUrl: String, path: String, callback: AWSS3Callback) {
+        AWSS3.uploadWithTransferUtility(photoUrl, path, callback)
     }
     //사진 등록 없을 시
     override fun emptyPhoto() {
-        data.imageUrl = "empty"
+        data.imageUrl = EMPTY
     }
 }

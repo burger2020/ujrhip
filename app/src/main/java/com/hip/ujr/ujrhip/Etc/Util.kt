@@ -2,15 +2,25 @@ package com.hip.ujr.ujrhip.Etc
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.INVISIBLE
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.VISIBLE
 import com.hip.ujr.ujrhip.R
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.nguyenhoanglam.imagepicker.ui.imagepicker.ImagePicker
 import java.util.*
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v4.content.ContextCompat.getSystemService
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import kotlinx.android.synthetic.main.activity_create_view.*
+
 
 object Util{//프로필 변경 옵션
     @JvmStatic//액티비티 사진찍기
@@ -123,6 +133,19 @@ object Util{//프로필 변경 옵션
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check()
     }
+    //키보드 visible
+    fun isSoftKeyView(context: Context, view: EditText, flag: Int){
+        val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+        when(flag){
+            VISIBLE->{
+                imm?.showSoftInput(view, 0)
+            }
+            INVISIBLE->{
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+        }
+    }
+
 }
 object FragmentUtil{
     @JvmStatic

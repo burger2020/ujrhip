@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
 import com.hip.ujr.ujrhip.Item.postData
 import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.adapter_list_ujr.view.*
@@ -36,10 +37,11 @@ class PostListAdapter(val context: Context, private val ujrItem: List<postData>)
         fun onBind(context: Context, ujrItem: List<postData>, position: Int){
             val path = "https://s3-ap-northeast-1.amazonaws.com/ujrhip727dc1caafc14cabbd4f1379cb5fc041/${ujrItem[position].imageUrl}"
             //등록 사진
-            if(ujrItem[position].imageUrl != "nonUrl")
+            if(ujrItem[position].imageUrl != EMPTY)
                 Glide.with(context)
                     .load(path)
                     .apply(RequestOptions().centerInside())
+                    .thumbnail(0f)
                     .into(photo)
 //            photo.layoutParams = ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
             //내용

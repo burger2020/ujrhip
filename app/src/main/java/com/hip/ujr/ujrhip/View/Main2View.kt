@@ -14,14 +14,20 @@ import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService
 import com.hip.ujr.ujrhip.Etc.AWSDB
+import com.hip.ujr.ujrhip.Etc.StringData
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
 import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.activity_main2_view.*
+import kotlinx.android.synthetic.main.fragment_list_fragment_view.*
 import kotlinx.android.synthetic.main.fragment_main2_view.view.*
 
 
 class Main2View : AppCompatActivity() {
 
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var fragment1 = PlaceholderFragment.newInstance(1)
+    private var fragment2 = ListFragmentView.newInstance()
+    private var fragment3 = HomeFragmentView.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,18 +54,25 @@ class Main2View : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             return when(position){
                 0->{
-                    PlaceholderFragment.newInstance(position + 1)
+                    fragment1
                 }
                 1->{
-                    ListFragmentView.newInstance()
+                    fragment2
                 }
                 else->{
-                    HomeFragmentView.newInstance()
+                    fragment3
                 }
             }
         }
         //화면 개수
         override fun getCount(): Int = 3
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        container.currentItem = 1
+        fragment2.refreshLayout.isRefreshing = true
+        fragment2.refreshData()
+        fragment2.refreshLayout.isRefreshing = false
     }
     //초기화
     private fun initialize() {
@@ -85,9 +98,9 @@ class Main2View : AppCompatActivity() {
     }
     private fun setView(){
         //플로팅 버튼 클릭
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             //게시물 생성 페이지
-            startActivity(Intent(this,CreateView::class.java))
+            fragment2.startActivityForResult(Intent(this,CreateView::class.java), CREATE_ACTIVITY)
         }
         //뷰페이저 어뎁터 연결
         container.adapter = mSectionsPagerAdapter

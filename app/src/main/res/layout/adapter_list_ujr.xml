@@ -17,6 +17,7 @@
                 android:id="@+id/postPhoto"
                 tools:minHeight="100dp"
                 tools:background="@color/disable"
+                android:adjustViewBounds="true"
                 android:layout_width="match_parent" android:layout_height="wrap_content"/>
         <TextView
                 app:layout_constraintTop_toBottomOf="@id/postPhoto"

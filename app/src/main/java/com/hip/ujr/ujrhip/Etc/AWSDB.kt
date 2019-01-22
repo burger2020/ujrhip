@@ -1,6 +1,9 @@
 package com.hip.ujr.ujrhip.Etc
 
-import android.util.Log
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import com.amazonaws.ClientConfiguration
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
 import com.amazonaws.mobile.client.AWSMobileClient
@@ -14,10 +17,11 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
 import com.hip.ujr.ujrhip.Item.postData
-import kotlin.concurrent.thread
 import android.os.StrictMode
-
-
+import android.util.Log
+import java.io.IOException
+import java.io.InputStream
+import java.lang.Exception
 
 
 object  AWSDB {
@@ -41,7 +45,8 @@ object  AWSDB {
     fun <T> createTable(data : T){
         dynamoDBMapper.save(data)
     }
-    fun getItem(callBack: AWSDBInterface) {
+
+    fun getItem(callBack: AWSDBCallback) {
         val item = postData()
 
         item.userId = "ㅜ너누ㅜㄴ눈"
@@ -60,11 +65,11 @@ object  AWSDB {
             .withScanIndexForward(false)
 
         val scanExpression = DynamoDBScanExpression()
+            .withLimit(1)
             .withFilterExpression("userId > :val1")
             .withExpressionAttributeValues(eav)
 
-
-        scanExpression.limit = 3
+        scanExpression.limit = 1
 
         //네트워크 사용 쓰레드
         if (android.os.Build.VERSION.SDK_INT > 9) {
