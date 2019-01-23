@@ -3,7 +3,6 @@ package com.hip.ujr.ujrhip.Model
 import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Etc.AWSS3
 import com.hip.ujr.ujrhip.Etc.AWSS3Callback
-import com.hip.ujr.ujrhip.Etc.StringData
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
 import com.hip.ujr.ujrhip.Item.postData
 

@@ -4,7 +4,6 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribut
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable
 
-
 @DynamoDBTable(tableName = "postData")
 class postData {
     @get:DynamoDBHashKey(attributeName = "date")
@@ -24,5 +23,9 @@ class postData {
         this.password = password
         this.imageUrl = photoUrl
         this.content = content
+    }
+
+    object DateComparator : Comparator<postData> {
+        override fun compare(p1: postData, p2: postData): Int = p2.date!!.compareTo(p1.date!!)
     }
 }

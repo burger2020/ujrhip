@@ -2,13 +2,12 @@ package com.hip.ujr.ujrhip.View
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedScanList
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSDBCallback
@@ -45,7 +44,7 @@ class ListFragmentView : Fragment(), AWSDBCallback {
         rootView.refreshLayout.isRefreshing = false
     }
     //인터페이스 콜백
-    override fun loadDataCallback(data: PaginatedScanList<postData>) {
+    override fun loadDataCallback(data: ArrayList<postData>) {
         ujrItem.clear()
         ujrItem.addAll(data)
         postListAdapter.notifyDataSetChanged()
@@ -73,6 +72,7 @@ class ListFragmentView : Fragment(), AWSDBCallback {
                     //업로드 성공 후 돌아오면 게시물 초기화
                     UPLOAD_COMPLETED->{
                         refreshData()
+                        Snackbar.make(rootView,"게시물이 등록되었습니다.", Snackbar.LENGTH_SHORT).show()
                     }
                 }
             }

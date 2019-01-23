@@ -78,8 +78,10 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
             model.savePhoto(photoUrl, path, this)
         else
             model.emptyPhoto()
-        thread(start = true) {
+        runOnUiThread {
             AWSDB.createTable(model.data)
+            if(path=="")
+                uploadSuccess()
         }
     }
     //사진 선택 옵션
@@ -121,16 +123,18 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
     override fun imageLoadCallback(callback: Int) {
         when(callback){
             COMPLETED->{
-                Snackbar.make(window.decorView.rootView,"게시물이 등록되었습니다.",Snackbar.LENGTH_SHORT).show()
-                setResult(UPLOAD_COMPLETED)
-                finish()
-                progressbarVisible(INVISIBLE)
+                uploadSuccess()
             }
             ERROR->{
-                Snackbar.make(window.decorView.rootView,"문제가 발생하였습니다. 다시시도해 주세요.",Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(window.decorView.rootView,"다시시도해 주세요.",Snackbar.LENGTH_SHORT).show()
                 progressbarVisible(INVISIBLE)
             }
         }
+    }
+    //업로드 완료 및 페이지 나가기
+    private fun uploadSuccess(){
+        setResult(UPLOAD_COMPLETED)
+        finish()
     }
     //초기화
     private fun initialize(){

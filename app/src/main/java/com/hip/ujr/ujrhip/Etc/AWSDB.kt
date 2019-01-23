@@ -1,9 +1,5 @@
 package com.hip.ujr.ujrhip.Etc
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import com.amazonaws.ClientConfiguration
 import com.amazonaws.mobile.auth.core.internal.util.ThreadUtils
 import com.amazonaws.mobile.client.AWSMobileClient
@@ -19,9 +15,6 @@ import com.amazonaws.services.dynamodbv2.model.Condition
 import com.hip.ujr.ujrhip.Item.postData
 import android.os.StrictMode
 import android.util.Log
-import java.io.IOException
-import java.io.InputStream
-import java.lang.Exception
 
 
 object  AWSDB {
@@ -44,12 +37,13 @@ object  AWSDB {
 
     fun <T> createTable(data : T){
         dynamoDBMapper.save(data)
+
     }
 
     fun getItem(callBack: AWSDBCallback) {
-        val item = postData()
+//        val item = postData()
 
-        item.userId = "ㅜ너누ㅜㄴ눈"
+//        item.userId = "ㅜ너누ㅜㄴ눈"
 
         val eav = HashMap<String, AttributeValue>()
         eav[":val1"] = AttributeValue().withS("0")
@@ -65,7 +59,7 @@ object  AWSDB {
             .withScanIndexForward(false)
 
         val scanExpression = DynamoDBScanExpression()
-            .withLimit(1)
+            .withLimit(0)
             .withFilterExpression("userId > :val1")
             .withExpressionAttributeValues(eav)
 
@@ -78,8 +72,15 @@ object  AWSDB {
         }
 
         ThreadUtils.runOnUiThread {
-            val a = dynamoDBMapper.scan(postData::class.java,scanExpression)
-//            val a = dynamoDBMapper.query(postData::class.java,queryExpression)
+
+            val a = arrayListOf<postData>()
+            dynamoDBMapper.scan(postData::class.java,scanExpression).forEach {
+//            dynamoDBMapper.query(postData::class.java,queryExpression).forEach {
+                a.add(it)
+            }
+            //정렬
+            a.sortWith(postData.DateComparator)
+            Log.d("a_date: ","${a.size}")
             callBack.loadDataCallback(a)
         }
     }
