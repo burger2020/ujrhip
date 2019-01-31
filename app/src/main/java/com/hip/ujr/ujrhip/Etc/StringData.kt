@@ -2,6 +2,11 @@ package com.hip.ujr.ujrhip.Etc
 
 class StringData {
     companion object {
+        //초기화시 리스트 가져올 개수
+        const val initialListSize = 20
+        //하단 닿을시 리스트 추가 개수
+        const val addListSize = 10
+        //사진 없을시 저장 데이터
         const val EMPTY = "EMPTY"
 
         //aws s3 콜백
