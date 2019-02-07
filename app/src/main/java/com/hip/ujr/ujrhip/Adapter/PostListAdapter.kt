@@ -99,7 +99,7 @@ class PostListAdapter(val context: Context, private val ujrItem: List<postData>,
                 difDate < 10 -> date.text = "${difDate}일전"
             }
             //옵션버튼 눌렀을때
-            view.postDate.setOnClickListener {
+            view.postOptionBtn.setOnClickListener {
                 callBack.listOptionClick(ujrItem, position)
             }
         }
