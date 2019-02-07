@@ -195,9 +195,11 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
         when(visible){
             VISIBLE->{
                 progressBar.visibility = View.VISIBLE
+                listProgress.start()
             }
             INVISIBLE->{
                 progressBar.visibility = View.GONE
+                listProgress.stop()
             }
         }
     }

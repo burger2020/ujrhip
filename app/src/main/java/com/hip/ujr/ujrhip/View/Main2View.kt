@@ -17,17 +17,18 @@ import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.StringData
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
 import com.hip.ujr.ujrhip.R
+import com.instacart.library.truetime.TrueTimeRx
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main2_view.*
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.*
 import kotlinx.android.synthetic.main.fragment_main2_view.view.*
+import kotlin.concurrent.thread
 
 
 class Main2View : AppCompatActivity() {
-
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
-    private var fragment1 = PlaceholderFragment.newInstance(1)
-    private var fragment2 = ListFragmentView.newInstance()
-    private var fragment3 = HomeFragmentView.newInstance()
+    private var fragment1 = ListFragmentView.newInstance()
+    private var fragment2 = HomeFragmentView.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,23 +57,20 @@ class Main2View : AppCompatActivity() {
                 0->{
                     fragment1
                 }
-                1->{
-                    fragment2
-                }
                 else->{
-                    fragment3
+                    fragment2
                 }
             }
         }
         //화면 개수
-        override fun getCount(): Int = 3
+        override fun getCount(): Int = 2
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        container.currentItem = 1
-        fragment2.refreshLayout.isRefreshing = true
-        fragment2.refreshData()
-        fragment2.refreshLayout.isRefreshing = false
+        container.currentItem = 0
+        fragment1.refreshLayout.isRefreshing = true
+        fragment1.refreshData()
+        fragment1.refreshLayout.isRefreshing = false
     }
     //초기화
     private fun initialize() {
@@ -92,7 +90,13 @@ class Main2View : AppCompatActivity() {
                 Log.e("MainView", "Initialization error.", e)
             }
         })
-
+//        //네트워크 시간
+//        thread{ //truetime 초기화
+//            TrueTimeRx.build()
+//                .initializeRx("time.google.com")
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({ date -> Log.v("TAG!", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
+//        }
         AWSDB.init()
 //        AWSS3.uploadWithTransferUtility(applicationContext,"","")
     }
@@ -100,12 +104,12 @@ class Main2View : AppCompatActivity() {
         //플로팅 버튼 클릭
         fab.setOnClickListener {
             //게시물 생성 페이지
-            fragment2.startActivityForResult(Intent(this,CreateView::class.java), CREATE_ACTIVITY)
+            fragment1.startActivityForResult(Intent(this,CreateView::class.java), CREATE_ACTIVITY)
         }
         //뷰페이저 어뎁터 연결
         container.adapter = mSectionsPagerAdapter
         container.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        container.currentItem = 1
+        container.currentItem = 0
         tabs.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(container))
     }
     //

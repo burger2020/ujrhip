@@ -7,13 +7,13 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
+import android.widget.Toast
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
+import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSDBCallback
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
@@ -23,7 +23,9 @@ import com.hip.ujr.ujrhip.R
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.view.*
 
 
-class ListFragmentView : Fragment(), AWSDBCallback {
+class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -71,6 +73,10 @@ class ListFragmentView : Fragment(), AWSDBCallback {
         }
         listScroll(true)
     }
+    //리스트 옵션 버튼 클릭
+    override fun listOptionClick(postData: postData, position: Int) {
+        Toast.makeText(context,"userid: ${postData.userId} $position",Toast.LENGTH_LONG).show()
+    }
     //인터페이스 콜백 리스트 추가
     override fun addDataCallback(data: ArrayList<postData>) {
         ujrItem.addAll(data)
@@ -88,14 +94,14 @@ class ListFragmentView : Fragment(), AWSDBCallback {
     }
     //    기본 세팅 초기화
     private fun initialize() {
-        postListAdapter = PostListAdapter(rootView.context,ujrItem)
+        postListAdapter = PostListAdapter(rootView.context,ujrItem, this)
         rootView.postListView.adapter = postListAdapter
         rootView.postListView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         AWSDB.getList(this)
     }
     //하단 내릴시 리스트 추가
     private fun addList(){
-        if(addListFlag && ujrItem[ujrItem.size - 1].index!! > 1) {
+        if(addListFlag && ujrItem.size!=0 && ujrItem[ujrItem.size - 1].index!! > 1) {
             addListFlag = false
             listScroll(false)
             AWSDB.addList(this, ujrItem[ujrItem.size - 1].index!!)
