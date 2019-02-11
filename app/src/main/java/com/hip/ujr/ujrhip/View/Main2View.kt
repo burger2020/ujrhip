@@ -13,16 +13,13 @@ import com.amazonaws.mobile.client.AWSMobileClient
 import com.amazonaws.mobile.client.Callback
 import com.amazonaws.mobile.client.UserStateDetails
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferService
+import com.hip.ujr.ujrhip.Etc.AWSCognito
 import com.hip.ujr.ujrhip.Etc.AWSDB
-import com.hip.ujr.ujrhip.Etc.StringData
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
 import com.hip.ujr.ujrhip.R
-import com.instacart.library.truetime.TrueTimeRx
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main2_view.*
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.*
 import kotlinx.android.synthetic.main.fragment_main2_view.view.*
-import kotlin.concurrent.thread
 
 
 class Main2View : AppCompatActivity() {
@@ -98,7 +95,7 @@ class Main2View : AppCompatActivity() {
 //                .subscribe({ date -> Log.v("TAG!", "TrueTime was initialized and we have a time: $date") }) { throwable -> throwable.printStackTrace() }
 //        }
         AWSDB.init()
-//        AWSS3.uploadWithTransferUtility(applicationContext,"","")
+        AWSCognito.init(applicationContext)
     }
     private fun setView(){
         //플로팅 버튼 클릭

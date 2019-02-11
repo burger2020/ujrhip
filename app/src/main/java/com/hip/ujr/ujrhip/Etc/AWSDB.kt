@@ -4,7 +4,6 @@ import android.os.StrictMode
 import android.util.Log
 import com.amazonaws.ClientConfiguration
 import com.amazonaws.mobile.client.AWSMobileClient
-import com.amazonaws.mobileconnectors.dynamodbv2.document.Table
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBScanExpression
@@ -62,7 +61,6 @@ object  AWSDB {
 
     fun getList(callBack: AWSDBCallback) {
         thread {
-
             val postIndex = PostIndex()
             postIndex.partition = "partition"
             val queryExpression = DynamoDBQueryExpression<PostIndex>()
@@ -73,15 +71,12 @@ object  AWSDB {
             dynamoDBMapper.query(PostIndex::class.java,queryExpression).forEach {
                 index = it.index!!
 
-                Log.d("a_date: ","$index")
-
                 index -= initialListSize
                 if(index<1)
                     index = 1
                 val eav = HashMap<String, AttributeValue>()
                 eav[":val1"] = AttributeValue().withN("$index")
 
-                Log.d("a_date: ","$index")
                 //네트워크 사용 쓰레드
                 if (android.os.Build.VERSION.SDK_INT > 9) {
                     val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -108,6 +103,10 @@ object  AWSDB {
                 }
             }
         }
+    }
+    //TODO 데이터 업데이트 (좋아요, 댓글 개수)
+    fun updateList(){
+
     }
     //스크롤 하단 내릴시 리스트 추가
     fun addList(callBack: AWSDBCallback, lastIndex: Long){

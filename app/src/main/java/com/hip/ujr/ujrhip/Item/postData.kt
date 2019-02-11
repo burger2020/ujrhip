@@ -3,9 +3,10 @@ package com.hip.ujr.ujrhip.Item
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable
+import java.io.Serializable
 
 @DynamoDBTable(tableName = "postData")
-class postData {
+class postData: Serializable {
     @get:DynamoDBHashKey(attributeName = "postIndex")
     var index: Long? = null
     @get:DynamoDBAttribute(attributeName = "postDate")
@@ -37,12 +38,4 @@ class postData {
     object DateComparator : Comparator<postData> {
         override fun compare(p1: postData, p2: postData): Int = p2.date!!.compareTo(p1.date!!)
     }
-}
-@DynamoDBTable(tableName = "postIndex")
-class PostIndex{
-    @get:DynamoDBHashKey(attributeName = "partition")
-    var partition: String? = null
-    @get:DynamoDBAttribute(attributeName = "index")
-    var index: Long? = null
-
 }

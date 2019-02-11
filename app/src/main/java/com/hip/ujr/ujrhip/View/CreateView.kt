@@ -7,18 +7,23 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState.COMPLETED
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState.FAILED
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
-import com.hip.ujr.ujrhip.Etc.*
-import com.hip.ujr.ujrhip.Etc.StringData.Companion.COMPLETED
+import com.hip.ujr.ujrhip.Etc.AWSS3
+import com.hip.ujr.ujrhip.Etc.StateMaintainer
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
-import com.hip.ujr.ujrhip.Etc.StringData.Companion.ERROR
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.INVISIBLE
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.VISIBLE
+import com.hip.ujr.ujrhip.Etc.Util
+import com.hip.ujr.ujrhip.Item.postData
 import com.hip.ujr.ujrhip.Model.CreateModel
 import com.hip.ujr.ujrhip.Presenter.CreatePresenter
 import com.hip.ujr.ujrhip.R
@@ -26,20 +31,13 @@ import com.nguyenhoanglam.imagepicker.model.Config
 import com.nguyenhoanglam.imagepicker.model.Image
 import com.orhanobut.dialogplus.DialogPlus
 import kotlinx.android.synthetic.main.activity_create_view.*
-import java.util.*
-import kotlin.concurrent.thread
 
-class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
+class CreateView : AppCompatActivity(), CreateContractor.View {
     private val mStateMaintainer = StateMaintainer(fragmentManager, CreateView::class.java.name)
     private lateinit var model: CreateModel
     private lateinit var presenter: CreatePresenter
 
     private val REQUEST_IMAGE_CAPTURE = 10942
-    //    private var dbTable : Table? = null
-    var content = ""
-    var userId = ""
-    var password = ""
-    private var photoUrl = EMPTY
     var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +50,11 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
     //사진 선택 옵션 다이얼로그
     private fun addPhoto() {
         Util.isSoftKeyView(this,postContentTxt, INVISIBLE)
-        val adapter = ProfileDialog(this, 3)
+        val menuName =
+            arrayListOf(getString(R.string.profileDialogText),
+                getString(R.string.profileDialogText1),
+                getString(R.string.profileDialogText2))
+        val adapter = ProfileDialog(this, menuName)
         var overlapClick = true
         val dialog = DialogPlus.newDialog(this)
             .setAdapter(adapter)
@@ -71,18 +73,7 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
     private fun pushData() {
         Util.isSoftKeyView(this,postContentTxt, INVISIBLE)
         progressbarVisible(VISIBLE)
-        val c = Calendar.getInstance()
-        photoUrl = System.currentTimeMillis().toString()
-        model.setData(userId,c.timeInMillis,password,photoUrl,content)
-        if(path != "")
-            model.savePhoto(photoUrl, path, this)
-        else
-            model.emptyPhoto()
-        runOnUiThread {
-            AWSDB.createTable(model.data)
-            if(path=="")
-                uploadSuccess()
-        }
+        presenter.addPhoto(userIdTxt.text.toString(), postPasswordTxt.text.toString(), postContentTxt.text.toString(), path)
     }
     //사진 선택 옵션
     private fun profileImageSetting(sect: Int) {
@@ -120,19 +111,20 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
             .into(photoImg)
     }
     //이미지 로드 완료시 콜백
-    override fun imageLoadCallback(callback: Int) {
-        when(callback){
+    override fun tableDataSaveTransfer(state: TransferState) {
+        when(state){
             COMPLETED->{
                 uploadSuccess()
             }
-            ERROR->{
+            FAILED ->{
                 Snackbar.make(window.decorView.rootView,"다시시도해 주세요.",Snackbar.LENGTH_SHORT).show()
                 progressbarVisible(INVISIBLE)
             }
+            else -> Log.d("save_transfer: ", state.toString())
         }
     }
     //업로드 완료 및 페이지 나가기
-    private fun uploadSuccess(){
+    override fun uploadSuccess(){
         setResult(UPLOAD_COMPLETED)
         finish()
     }
@@ -145,14 +137,10 @@ class CreateView : AppCompatActivity(), CreateContractor.View, AWSS3Callback {
         val watcher = object: TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 // 내용 10자, 게시자명 3자, 게시물 비밀번호 4자 이상 입력시 등록버튼 활성화
-                content = postContentTxt.text.toString()
-                userId = userIdTxt.text.toString()
-                password = postPasswordTxt.text.toString()
-                if(userId.length>=2 &&  password.length>=3 && content.length>=3) {
+                if(presenter.checkForm(postContentTxt.text.toString(), userIdTxt.text.toString(), postPasswordTxt.text.toString())){
                     postPushBtn.setTextColor(resources.getColor(R.color.black))
                     postPushBtn.isEnabled = true
-                }
-                else {
+                }else {
                     postPushBtn.setTextColor(resources.getColor(R.color.disable))
                     postPushBtn.isEnabled = false
                 }

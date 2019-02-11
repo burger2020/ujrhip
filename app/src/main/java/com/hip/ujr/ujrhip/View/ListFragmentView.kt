@@ -14,18 +14,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
 import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
+import com.hip.ujr.ujrhip.Dialog.ProfileDialog
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSDBCallback
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.POSITION
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST_DATA
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
 import com.hip.ujr.ujrhip.Item.postData
 import com.hip.ujr.ujrhip.R
+import com.orhanobut.dialogplus.DialogPlus
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.view.*
 
 
 class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -75,7 +77,32 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
     }
     //리스트 옵션 버튼 클릭
     override fun listOptionClick(postData: postData, position: Int) {
-        Toast.makeText(context,"userid: ${postData.userId} $position",Toast.LENGTH_LONG).show()
+        val menuName =
+            arrayListOf(getString(R.string.optionDialogText), getString(R.string.optionDialogText1), getString(R.string.optionDialogText2))
+        val adapter = ProfileDialog(rootView.context, menuName)
+        var overlapClick = true
+        val dialog = DialogPlus.newDialog(rootView.context)
+            .setAdapter(adapter)
+            .setExpanded(false, 600)
+            .setOnItemClickListener { dialog, _, _, _ ->
+                if(overlapClick) {
+                    overlapClick = false
+                    dialog.dismiss()
+                    overlapClick = true
+                }
+            }
+            .create()
+        dialog.show()
+    }
+    //좋아요 클릭
+    override fun likeBtnClick(postData: postData, position: Int) {
+    }
+    //댓글 클릭 -> 댓글창 이동
+    override fun commentBtnClick(postData: postData, position: Int) {
+        val intent = Intent(context,CommentPageView::class.java)
+        intent.putExtra(POST_DATA, postData)
+        intent.putExtra(POSITION, position)
+        startActivity(intent)
     }
     //인터페이스 콜백 리스트 추가
     override fun addDataCallback(data: ArrayList<postData>) {

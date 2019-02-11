@@ -9,11 +9,11 @@ import android.widget.TextView
 import com.hip.ujr.ujrhip.R
 
 @Suppress("UNREACHABLE_CODE")
-class ProfileDialog(context: Context, private val count: Int) : BaseAdapter() {
+class ProfileDialog(context: Context, private val menuName: ArrayList<String>) : BaseAdapter() {
 
     private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
 
-    override fun getCount(): Int { return count }
+    override fun getCount(): Int { return menuName.size }
     override fun getItem(position: Int): Any { return position }
 
     override fun getItemId(position: Int): Long { return position.toLong() }
@@ -32,26 +32,11 @@ class ProfileDialog(context: Context, private val count: Int) : BaseAdapter() {
             viewHolder = view.tag as ViewHolder
         }
 
-        val context = parent.context
-        when (position) {
-            0 -> {
-                viewHolder.textView.text = context.getString(R.string.profileDialogText)
-                viewHolder.view.visibility = View.VISIBLE
-
-            }
-            1 -> {
-                viewHolder.textView.text = context.getString(R.string.profileDialogText1)
-                viewHolder.view.visibility = View.GONE
-            }
-            2 -> {
-                viewHolder.textView.text = context.getString(R.string.profileDialogText2)
-                viewHolder.view.visibility = View.GONE
-            }
-            3 -> {
-                viewHolder.textView.text = "db update"
-                viewHolder.view.visibility = View.GONE
-            }
-        }
+        viewHolder.textView.text = menuName[position]
+        if(position == 0)
+            viewHolder.view.visibility = View.VISIBLE
+        else
+            viewHolder.view.visibility = View.GONE
 
         return view
     }
