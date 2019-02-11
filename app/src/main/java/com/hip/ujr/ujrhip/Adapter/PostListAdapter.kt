@@ -52,7 +52,7 @@ class PostListAdapter(val context: Context, private val ujrItem: List<postData>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ViewHolder -> if(ujrItem.isNotEmpty()) holder.onBind(context, ujrItem[position - 1], position, callBack)
+            is ViewHolder -> if(ujrItem.isNotEmpty()) holder.onBind(context, ujrItem[position], position, callBack)
             is ViewHolderFooter -> holder.onBind()
             else -> {
 
@@ -101,8 +101,10 @@ class PostListAdapter(val context: Context, private val ujrItem: List<postData>,
             view.postOptionBtn.setOnClickListener { callBack.listOptionClick(ujrItem, position) }
             //좋아요
             view.likeBtn.setOnClickListener { callBack.likeBtnClick(ujrItem, position) }
+            view.likeNumTxt.setOnClickListener { callBack.likeBtnClick(ujrItem, position) }
             //댓글
             view.commentBtn.setOnClickListener { callBack.commentBtnClick(ujrItem, position) }
+            view.commentNumTxt.setOnClickListener { callBack.commentBtnClick(ujrItem, position) }
         }
     }
     //푸터

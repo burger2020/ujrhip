@@ -6,8 +6,15 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable
 
 @DynamoDBTable(tableName = "commentTable")
 class CommentData {
-    @get:DynamoDBHashKey(attributeName = "partition")
-    var partition: String? = null
-    @get:DynamoDBAttribute(attributeName = "index")
+    @get:DynamoDBHashKey(attributeName = "index")
     var index: Long? = null
+    @get:DynamoDBAttribute(attributeName = "userName")
+    var userName = ""
+    @get:DynamoDBAttribute(attributeName = "comment")
+    var comment = ""
+    @get:DynamoDBAttribute(attributeName = "date")
+    var date = 0L
+    @get:DynamoDBAttribute(attributeName = "profileUrl")
+    var profileUrl = ""
+
 }
