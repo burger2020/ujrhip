@@ -58,7 +58,7 @@ class CommentListAdapter(val context: Context,private val commentList: ArrayList
         val view = view
         fun onBind(context: Context, commentList: CommentData, position: Int){
             view.commentUserNameTxt.text = commentList.userName
-            view.commentTxt.text = commentList.comment
+//            view.commentTxt.text = commentList.comment
         }
     }
 }

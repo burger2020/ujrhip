@@ -1,12 +1,12 @@
 package com.hip.ujr.ujrhip.Contractor
 
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Item.PostData
 
 interface ListFragmentContractor {
     interface View{
-        fun listOptionClick(postData: postData, position: Int)
-        fun likeBtnClick(postData: postData, position: Int)
-        fun commentBtnClick(postData: postData, position: Int)
+        fun listOptionClick(PostData: PostData, position: Int)
+        fun likeBtnClick(PostData: PostData, position: Int)
+        fun commentBtnClick(PostData: PostData, position: Int)
     }
     interface Adapter{
 

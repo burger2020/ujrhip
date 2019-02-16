@@ -16,14 +16,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
+import com.hip.ujr.ujrhip.Etc.AWSCognito
 import com.hip.ujr.ujrhip.Etc.AWSS3
 import com.hip.ujr.ujrhip.Etc.StateMaintainer
-import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.INVISIBLE
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST_TYPE
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.VISIBLE
 import com.hip.ujr.ujrhip.Etc.Util
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Item.PostData
 import com.hip.ujr.ujrhip.Model.CreateModel
 import com.hip.ujr.ujrhip.Presenter.CreatePresenter
 import com.hip.ujr.ujrhip.R
@@ -36,7 +37,6 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     private val mStateMaintainer = StateMaintainer(fragmentManager, CreateView::class.java.name)
     private lateinit var model: CreateModel
     private lateinit var presenter: CreatePresenter
-
     private val REQUEST_IMAGE_CAPTURE = 10942
     var path = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +73,10 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
     private fun pushData() {
         Util.isSoftKeyView(this,postContentTxt, INVISIBLE)
         progressbarVisible(VISIBLE)
-        presenter.addPhoto(userIdTxt.text.toString(), postPasswordTxt.text.toString(), postContentTxt.text.toString(), path)
+        //TODO 유저 접속상태 확인하고 저장 데이터 구조 정하기
+//        if(AWSCognito.currUser)
+        val postData = PostData(POST_TYPE, System.currentTimeMillis(), postPasswordTxt.text.toString(), userIdTxt.text.toString(), postContentTxt.text.toString(), System.currentTimeMillis().toString())
+        presenter.addPhoto(postData, path)
     }
     //사진 선택 옵션
     private fun profileImageSetting(sect: Int) {

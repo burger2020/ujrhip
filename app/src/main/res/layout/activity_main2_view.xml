@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        tools:context=".View.Main2View">
+        tools:context=".View.MainView">
     <android.support.design.widget.AppBarLayout
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/postListView"

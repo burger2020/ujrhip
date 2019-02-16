@@ -2,7 +2,7 @@ package com.hip.ujr.ujrhip.Contractor
 
 import android.content.Context
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Item.PostData
 
 interface CreateContractor {
     interface View{
@@ -14,8 +14,9 @@ interface CreateContractor {
     }
     interface Presenter{
         fun setView(view: View)
+        fun setModel(model: Model)
         fun checkForm(content: String, userId: String, password: String): Boolean
-        fun addPhoto(userId: String, password: String, content: String, path: String)
+        fun addPhoto(postData: PostData, path: String)
     }
     interface RequirePresenter{
         fun getAppContext(): Context
@@ -24,11 +25,11 @@ interface CreateContractor {
         fun tableDataSaveTransfer(state: TransferState)
     }
     interface Model{
-        var postData: postData
         fun setPresenter(presenter: RequirePresenter)
         fun emptyPhoto()
-        fun setData(userId: String?, date: Long?, password: String?, photoUrl: String?, content: String?)
+        fun setData(postData: PostData)
         fun savePhoto(photoUrl: String, path: String)
-        fun createTable(postData: postData)
+        fun createTable()
+        var postData: PostData
     }
 }

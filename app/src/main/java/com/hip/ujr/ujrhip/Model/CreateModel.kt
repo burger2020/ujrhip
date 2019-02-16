@@ -16,31 +16,31 @@ import com.hip.ujr.ujrhip.Contractor.CreateContractor
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSS3
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.EMPTY
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST
+import com.hip.ujr.ujrhip.Item.PostData
 import java.io.*
 
 class CreateModel : CreateContractor.Model {
-    override var postData = postData()
+    override lateinit var postData: PostData
     private var presenter : CreateContractor.RequirePresenter? = null
     //프레젠터
     override fun setPresenter(presenter: CreateContractor.RequirePresenter) {
         this.presenter = presenter
     }
     //테이블 데이터 세팅
-    override fun setData(userId: String?,date: Long?,password: String?,photoUrl: String?,content: String?) {
-        postData.setData(userId,date,password,photoUrl,content)
+    override fun setData(postData: PostData) {
+        this.postData = postData
     }
     //사진 저장
     override fun savePhoto(photoUrl: String, path: String) {
         uploadWithTransferUtility(photoUrl, path)
     }
     //사진 등록 없을 시
-    override fun emptyPhoto() {
-        postData.imageUrl = EMPTY
-    }
-    override fun createTable(postData: postData) {
-        AWSDB.createTable(postData)
-    }
+    override fun emptyPhoto() { postData.imageUrl = EMPTY }
+    //테이블에 데이터 저장
+    override fun createTable() {
+        Log.d("postData!!!!!!!@","$postData")
+        AWSDB.createPostTable(postData, POST) }
     //업로드
     private fun uploadWithTransferUtility(key: String, filePath: String) {
         val options = TransferUtilityOptions()

@@ -1,5 +1,0 @@
-{
-    "tableName": "post",
-    "partitionKeyName": "userId",
-    "partitionKeyType": "S"
-}

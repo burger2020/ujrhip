@@ -19,6 +19,7 @@ import android.support.v4.content.ContextCompat.getSystemService
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_create_view.*
 
 
@@ -145,7 +146,9 @@ object Util{//프로필 변경 옵션
             }
         }
     }
-
+    fun makeToast(context: Context, message: String){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 }
 object FragmentUtil{
     @JvmStatic

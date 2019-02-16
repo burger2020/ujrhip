@@ -1,5 +1,6 @@
 package com.hip.ujr.ujrhip.View
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -17,16 +18,19 @@ import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSDBCallback
+import com.hip.ujr.ujrhip.Etc.AWSS3
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.POSITION
+import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST_DATA
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.UPLOAD_COMPLETED
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Item.PostData
 import com.hip.ujr.ujrhip.R
 import com.orhanobut.dialogplus.DialogPlus
 import kotlinx.android.synthetic.main.fragment_list_fragment_view.view.*
 
 
+@Suppress("CAST_NEVER_SUCCEEDS", "UNCHECKED_CAST")
 class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +40,7 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
 
     private lateinit var rootView : View
 
-    private var ujrItem : ArrayList<postData> = arrayListOf()
+    private var postDataList : ArrayList<PostData> = arrayListOf()
     private lateinit var postListAdapter : PostListAdapter
 
     private val handlerThread = Handler()
@@ -56,6 +60,7 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
     private fun listScroll(flag: Boolean){
         if(!flag)
             rootView.postListView.setOnTouchListener(object : View.OnTouchListener{
+                @SuppressLint("ClickableViewAccessibility")
                 override fun onTouch(v: View?, event: MotionEvent?): Boolean {
                     return true
                 }
@@ -65,9 +70,9 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
 
     }
     //인터페이스 콜백  리스트 새로고침/초기화
-    override fun loadDataCallback(data: ArrayList<postData>) {
-        ujrItem.clear()
-        ujrItem.addAll(data)
+    override fun <T>loadDataCallback(data: ArrayList<T>) {
+        postDataList.clear()
+        postDataList.addAll(data as ArrayList<PostData>)
         handlerThread.post {
             postListAdapter.notifyDataSetChanged()
             rootView.refreshLayout.isRefreshing = false
@@ -76,7 +81,7 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
         listScroll(true)
     }
     //리스트 옵션 버튼 클릭
-    override fun listOptionClick(postData: postData, position: Int) {
+    override fun listOptionClick(postData: PostData, position: Int) {
         val menuName =
             arrayListOf(getString(R.string.optionDialogText), getString(R.string.optionDialogText1), getString(R.string.optionDialogText2))
         val adapter = ProfileDialog(rootView.context, menuName)
@@ -84,9 +89,21 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
         val dialog = DialogPlus.newDialog(rootView.context)
             .setAdapter(adapter)
             .setExpanded(false, 600)
-            .setOnItemClickListener { dialog, _, _, _ ->
+            .setOnItemClickListener { dialog, _, _, item ->
                 if(overlapClick) {
                     overlapClick = false
+                    when(item){
+                        1->{
+                            AWSDB.deleteList(postData)
+                            AWSS3.
+                            postDataList.remove(postData)
+                            Toast.makeText(context,"삭제 되었습니다.",Toast.LENGTH_SHORT).show()
+                            postListAdapter.notifyItemRemoved(position)
+                        }
+                        2->{
+                            Toast.makeText(context,"신고",Toast.LENGTH_SHORT).show()
+                        }
+                    }
                     dialog.dismiss()
                     overlapClick = true
                 }
@@ -95,18 +112,18 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
         dialog.show()
     }
     //좋아요 클릭
-    override fun likeBtnClick(postData: postData, position: Int) {
+    override fun likeBtnClick(PostData: PostData, position: Int) {
     }
     //댓글 클릭 -> 댓글창 이동
-    override fun commentBtnClick(postData: postData, position: Int) {
+    override fun commentBtnClick(PostData: PostData, position: Int) {
         val intent = Intent(context,CommentPageView::class.java)
-        intent.putExtra(POST_DATA, postData)
+        intent.putExtra(POST_DATA, PostData)
         intent.putExtra(POSITION, position)
         startActivity(intent)
     }
     //인터페이스 콜백 리스트 추가
-    override fun addDataCallback(data: ArrayList<postData>) {
-        ujrItem.addAll(data)
+    override fun <T>addDataCallback(data: ArrayList<T>) {
+        postDataList.addAll(data as ArrayList<PostData>)
         handlerThread.post {
             postListAdapter.notifyDataSetChanged()
             rootView.refreshLayout.isRefreshing = false
@@ -116,23 +133,23 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
     }
     //리스트 새로고침
     fun refreshData(){
-        AWSDB.getList(this)
+        AWSDB.getList(this, POST)
         listScroll(false)
     }
-    //    기본 세팅 초기화
+    //기본 세팅 초기화
     private fun initialize() {
-        postListAdapter = PostListAdapter(rootView.context,ujrItem, this)
+        postListAdapter = PostListAdapter(rootView.context,postDataList, this)
         rootView.postListView.adapter = postListAdapter
         rootView.postListView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        AWSDB.getList(this)
+        AWSDB.getList(this, POST)
     }
     //하단 내릴시 리스트 추가
     private fun addList(){
-        if(addListFlag && ujrItem.size!=0 && ujrItem[ujrItem.size - 1].index!! > 1) {
-            addListFlag = false
-            listScroll(false)
-            AWSDB.addList(this, ujrItem[ujrItem.size - 1].index!!)
-        }
+//        if(addListFlag && postDataList.size!=0 && postDataList[postDataList.size - 1].type!! > 1) {
+//            addListFlag = false
+//            listScroll(false)
+//            AWSDB.addList(this, postDataList[postDataList.size - 1].type!!)
+//        }
     }
     //뷰 초기화
     private fun setView() {

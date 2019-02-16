@@ -3,7 +3,6 @@ package com.hip.ujr.ujrhip.Adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,13 @@ import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.TYPE_FOOTER
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.TYPE_HEADER
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.TYPE_ITEM
-import com.hip.ujr.ujrhip.Item.postData
+import com.hip.ujr.ujrhip.Item.PostData
 import com.hip.ujr.ujrhip.R
 import com.instacart.library.truetime.TrueTimeRx
 import kotlinx.android.synthetic.main.adapter_list_ujr.view.*
 import java.util.*
 
-class PostListAdapter(val context: Context, private val ujrItem: List<postData>, private val callBack: ListFragmentContractor.View): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class PostListAdapter(val context: Context, private val ujrItem: List<PostData>, private val callBack: ListFragmentContractor.View): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     //아이템만 있으면 그대로 / 푸터있으면 +1 / 푸터,헤더 둘다있으면 +2
     override fun getItemCount(): Int = ujrItem.size + 1
@@ -66,7 +65,7 @@ class PostListAdapter(val context: Context, private val ujrItem: List<postData>,
         private val write = view.postWriter
         private val date = view.postDate
         @SuppressLint("SetTextI18n")
-        fun onBind(context: Context, ujrItem: postData, position: Int, callBack: ListFragmentContractor.View) {
+        fun onBind(context: Context, ujrItem: PostData, position: Int, callBack: ListFragmentContractor.View) {
             val path = "${context.getString(R.string.aws_s3_phath)}${ujrItem.imageUrl}"
             //등록 사진
 //            if(ujrItem[position].imageUrl != EMPTY)

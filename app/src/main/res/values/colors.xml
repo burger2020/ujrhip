@@ -9,4 +9,5 @@
     <color name="disableAlpha">#aaeeeeee</color>
     <color name="enable">#ffffff</color>
     <color name="colorProgressBackground">#aaaaaaaa</color>
+    <color name="gray5">#a0a0a0</color>
 </resources>

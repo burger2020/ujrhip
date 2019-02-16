@@ -17,11 +17,19 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".View.Login.ConfirmView">
+        </activity>
+        <activity android:name=".View.Login.SignUpView">
+        </activity>
+        <activity android:name=".View.Login.SignInView">
+        </activity>
+        <activity android:name=".View.MainView">
+        </activity>
         <activity android:name=".Adapter.CommentListAdapter">
         </activity>
         <activity android:name=".View.CommentPageView">
         </activity>
-        <activity android:name=".View.Main2View">
+        <activity android:name=".View.Login.LoginView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -19,9 +19,16 @@ object AWSS3 {
     fun init(context: Context){
         this.context = context
     }
+    fun removeWithTransferUtility(path: String){
+        val transferUtility = TransferUtility.builder()
+            .context(context)
+            .awsConfiguration(AWSMobileClient.getInstance().configuration)
+            .s3Client(AmazonS3Client(AWSMobileClient.getInstance())).build()
+
+        transferUtility
+    }
     //다운
     fun downloadWithTransferUtility(path: String) {
-
         val transferUtility = TransferUtility.builder()
             .context(context)
             .awsConfiguration(AWSMobileClient.getInstance().configuration)

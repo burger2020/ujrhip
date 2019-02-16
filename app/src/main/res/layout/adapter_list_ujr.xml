@@ -17,30 +17,40 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/postPhoto"
-                app:layout_constraintRight_toLeftOf="@id/postWriter"
+                app:layout_constraintRight_toLeftOf="@id/userInfoLayer"
                 android:layout_width="30dp" android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/profile_user"
                 android:id="@+id/profileImage"/>
-        <!--게시자 이름-->
-        <TextView
-                android:layout_width="wrap_content" android:layout_height="15dp"
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="wrap_content" android:layout_height="match_parent"
                 app:layout_constraintLeft_toRightOf="@id/profileImage"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/postDate"
-                tools:text="ㅇㅇㅇ"
-                android:textSize="12dp"
                 android:layout_marginStart="8dp"
-                android:id="@+id/postWriter"/>
-        <!--게시물 등록 시간-->
-        <TextView
-                android:layout_width="wrap_content" android:layout_height="15dp"
-                app:layout_constraintLeft_toRightOf="@id/profileImage"
-                app:layout_constraintTop_toBottomOf="@id/postWriter"
-                app:layout_constraintBottom_toTopOf="@id/postPhoto"
-                android:layout_marginStart="8dp"
-                android:textSize="12dp"
-                tools:text="1970.00.00"
-                android:id="@+id/postDate"/>
+                android:id="@+id/userInfoLayer">
+            <!--게시자 이름-->
+            <TextView
+                    android:layout_width="wrap_content" android:layout_height="15dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/postDate"
+                    tools:text="ㅇㅇㅇ"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:id="@+id/postWriter"/>
+            <!--게시물 등록 시간-->
+            <TextView
+                    android:layout_width="wrap_content" android:layout_height="15dp"
+                    app:layout_constraintTop_toBottomOf="@id/postWriter"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="12dp"
+                    tools:text="1970.00.00"
+                    android:id="@+id/postDate"/>
+        </android.support.constraint.ConstraintLayout>
         <!--게시물 옵션-->
         <ImageView
                 app:layout_constraintTop_toTopOf="parent"
@@ -69,7 +79,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_margin="8dp"
                 tools:text="게시물 내용"
-                android:minHeight="80dp"
+                android:minHeight="65dp"
                 android:textSize="15dp"
                 android:textColor="@color/black"
                 android:id="@+id/postContent"/>
@@ -117,5 +127,4 @@
                 tools:text="100"
                 android:id="@+id/commentNumTxt"/>
     </android.support.constraint.ConstraintLayout>
-
 </android.support.v7.widget.CardView>

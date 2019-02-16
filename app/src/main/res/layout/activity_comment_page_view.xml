@@ -40,6 +40,7 @@
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+    <!--댓글 리스트-->
     <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent" android:layout_height="0dp"
             app:layout_constraintRight_toRightOf="parent"
@@ -48,11 +49,13 @@
             app:layout_constraintTop_toBottomOf="@id/appbar"
             app:layout_constraintBottom_toTopOf="@id/divider1"
             android:id="@+id/commentList"/>
+    <!--구분선-->
     <ImageView
             android:layout_width="match_parent" android:layout_height="0.5dp"
             app:layout_constraintBottom_toTopOf="@id/commentEtx"
             android:background="@color/disable"
             android:id="@+id/divider1"/>
+    <!--댓글 입력 창-->
     <EditText
             android:layout_width="0dp" android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -61,8 +64,11 @@
             android:paddingStart="8dp"
             android:textSize="15dp"
             android:hint="댓글을 입력해 주세요"
+            android:imeOptions="actionSend"
+            android:inputType="text"
             android:background="@color/white"
             android:id="@+id/commentEtx"/>
+    <!--구분선-->
     <ImageView
             android:layout_width="0.5dp" android:layout_height="50dp"
             app:layout_constraintLeft_toRightOf="@id/commentEtx"
@@ -70,13 +76,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/disable"
             android:id="@+id/divider2"/>
+    <!--댓글 등록 버튼-->
     <TextView
             android:layout_width="50dp" android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/divider2"
             app:layout_constraintRight_toRightOf="parent"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/disable"
             android:textStyle="bold"
             android:textSize="15dp"
             android:text="등록"
