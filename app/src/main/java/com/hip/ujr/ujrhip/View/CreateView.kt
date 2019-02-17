@@ -96,7 +96,7 @@ class CreateView : AppCompatActivity(), CreateContractor.View {
             //gif아닌지 확인
             setImageView(path)
 //            if(images[images.length-1]!='f')
-//            else Toast.makeText(applicationContext,"gif", Toast.LENGTH_SHORT).show()
+//            else Toast.makeText(applicationContext,"gif", Toast.LENGTH_SHORT).showDeleteDialog()
         }
         //사진 찍기
         else if(requestCode == REQUEST_IMAGE_CAPTURE&& resultCode == AppCompatActivity.RESULT_OK){

@@ -6,19 +6,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
+import com.facebook.FacebookSdk.getApplicationContext
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
 import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
 import com.hip.ujr.ujrhip.Etc.AWSDB
 import com.hip.ujr.ujrhip.Etc.AWSDBCallback
-import com.hip.ujr.ujrhip.Etc.AWSS3
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.CREATE_ACTIVITY
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.POSITION
 import com.hip.ujr.ujrhip.Etc.StringData.Companion.POST
@@ -80,6 +82,26 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
         }
         listScroll(true)
     }
+
+    private fun showDeleteDialog(postData: PostData, position: Int) {
+        val editText = EditText(context)
+
+        val builder = AlertDialog.Builder(context!!)
+        builder.setTitle("게시물 삭제")
+        builder.setMessage("게시물 비밀번호를 입력해 주세요.")
+        builder.setView(editText)
+        builder.setPositiveButton("삭제") { dialog, which ->
+            if(editText.text.toString() == postData.password){
+                AWSDB.deleteList(postData)
+                postDataList.remove(postData)
+                Toast.makeText(context,"삭제 되었습니다.",Toast.LENGTH_SHORT).show()
+                postListAdapter.notifyItemRemoved(position)
+            }
+        }
+        builder.setNegativeButton("취소") { dialog, which -> }
+        builder.show()
+    }
+
     //리스트 옵션 버튼 클릭
     override fun listOptionClick(postData: PostData, position: Int) {
         val menuName =
@@ -94,10 +116,7 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
                     overlapClick = false
                     when(item){
                         1->{
-                            AWSDB.deleteList(postData)
-                            postDataList.remove(postData)
-                            Toast.makeText(context,"삭제 되었습니다.",Toast.LENGTH_SHORT).show()
-                            postListAdapter.notifyItemRemoved(position)
+                            showDeleteDialog(postData, position)
                         }
                         2->{
                             Toast.makeText(context,"신고",Toast.LENGTH_SHORT).show()

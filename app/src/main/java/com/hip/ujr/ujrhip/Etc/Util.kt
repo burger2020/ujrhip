@@ -85,7 +85,7 @@ object Util{//프로필 변경 옵션
                         .setMaxSize(1)                     //  Max images can be selected
                         .setSavePath(activity.getString(R.string.app_name))         //  Image capture folder name
                         .setSelectedImages(images)          //  Selected images
-                        .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
+                        .setAlwaysShowDoneButton(true)      //  Set always showDeleteDialog done button in multiple mode
                         .setKeepScreenOn(true)              //  Keep screen on when selecting images
                         .start()                            //  Start ImagePicker
             }
@@ -121,7 +121,7 @@ object Util{//프로필 변경 옵션
                         .setMaxSize(1)                     //  Max images can be selected
                         .setSavePath(fragment.getString(R.string.app_name))         //  Image capture folder name
                         .setSelectedImages(images)          //  Selected images
-                        .setAlwaysShowDoneButton(true)      //  Set always show done button in multiple mode
+                        .setAlwaysShowDoneButton(true)      //  Set always showDeleteDialog done button in multiple mode
                         .setKeepScreenOn(true)              //  Keep screen on when selecting images
                         .start()                            //  Start ImagePicker
             }
@@ -154,7 +154,7 @@ object FragmentUtil{
     @JvmStatic
     fun fragmentChanger(activity:Activity,fragment : android.support.v4.app.Fragment){
         if(fragment.isAdded){
-//            (activity as MainActivity).supportFragmentManager.beginTransaction().hide(activity.currentHomeFragment).show(fragment).commit()
+//            (activity as MainActivity).supportFragmentManager.beginTransaction().hide(activity.currentHomeFragment).showDeleteDialog(fragment).commit()
 //            activity.currentHomeFragment = fragment
         }
     }
