@@ -95,7 +95,6 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
                     when(item){
                         1->{
                             AWSDB.deleteList(postData)
-                            AWSS3.
                             postDataList.remove(postData)
                             Toast.makeText(context,"삭제 되었습니다.",Toast.LENGTH_SHORT).show()
                             postListAdapter.notifyItemRemoved(position)

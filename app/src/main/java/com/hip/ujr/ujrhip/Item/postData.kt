@@ -2,40 +2,33 @@ package com.hip.ujr.ujrhip.Item
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable
 import java.io.Serializable
 
-@DynamoDBTable(tableName = "postData")
-class postData: Serializable {
-    @get:DynamoDBHashKey(attributeName = "postIndex")
-    var index: Long? = null
-    @get:DynamoDBAttribute(attributeName = "postDate")
-    var date: Long? = null
-    @get:DynamoDBAttribute(attributeName = "postUserId")
-    var userId: String? = null
-    @get:DynamoDBAttribute(attributeName = "postPassword")
-    var password: String? = null
-    @get:DynamoDBAttribute(attributeName = "postImageUrl")
-    var imageUrl: String? = null
-    @get:DynamoDBAttribute(attributeName = "postContent")
-    var content: String? = null
-
-    fun setData(userId: String?,date: Long?,password: String?,imageUrl: String?,content: String?){
-        this.userId = userId
+@DynamoDBTable(tableName = "Post")
+data class PostData(@get:DynamoDBHashKey(attributeName = "Type")
+                    var type: String? = null,
+                    @get:DynamoDBRangeKey(attributeName = "Date")
+                    var date: Long? = null,
+                    @get:DynamoDBAttribute(attributeName = "Password")
+                    var password: String? = null,
+                    @get:DynamoDBAttribute(attributeName = "UserId")
+                    var userId: String? = null,
+                    @get:DynamoDBAttribute(attributeName = "Content")
+                    var content: String? = null,
+                    @get:DynamoDBAttribute(attributeName = "ImageUrl")
+                    var imageUrl: String? = null): Serializable {
+    constructor():this("",0L,"","","","")
+    fun setData(type: String?, date: Long?, password: String?, userId: String?, content: String?, imageUrl: String?){
+        this.type = type
         this.date = date
         this.password = password
-        this.imageUrl = imageUrl
+        this.userId = userId
         this.content = content
+        this.imageUrl = imageUrl
     }
-    fun saveData(data: postData,idx: Long){
-        this.userId = data.userId
-        this.date = data.date
-        this.password = data.password
-        this.imageUrl = data.imageUrl
-        this.content = data.content
-        this.index = idx
-    }
-    object DateComparator : Comparator<postData> {
-        override fun compare(p1: postData, p2: postData): Int = p2.date!!.compareTo(p1.date!!)
+    object DateComparator : Comparator<PostData> {
+        override fun compare(p1: PostData, p2: PostData): Int = p2.date!!.compareTo(p1.date!!)
     }
 }
