@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import com.facebook.FacebookSdk.getApplicationContext
 import com.hip.ujr.ujrhip.Adapter.PostListAdapter
 import com.hip.ujr.ujrhip.Contractor.ListFragmentContractor
 import com.hip.ujr.ujrhip.Dialog.ProfileDialog
@@ -91,11 +90,13 @@ class ListFragmentView : Fragment(), AWSDBCallback, ListFragmentContractor.View 
         builder.setMessage("게시물 비밀번호를 입력해 주세요.")
         builder.setView(editText)
         builder.setPositiveButton("삭제") { dialog, which ->
-            if(editText.text.toString() == postData.password){
+            if(editText.text.toString() == postData.password) {
                 AWSDB.deleteList(postData)
                 postDataList.remove(postData)
-                Toast.makeText(context,"삭제 되었습니다.",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "삭제 되었습니다.", Toast.LENGTH_SHORT).show()
                 postListAdapter.notifyItemRemoved(position)
+            }else{
+                Toast.makeText(context, "비밀번호가 다릅니다.", Toast.LENGTH_SHORT).show()
             }
         }
         builder.setNegativeButton("취소") { dialog, which -> }
